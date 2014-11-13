@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+</head>
+<body>
+
+<form action="cadastro.php" id="searchForm">
+    <input type="text" name="s" placeholder="Link">
+    <input type="submit" value="Short">
+</form>
+<!-- the result of the search will be rendered inside this div -->
+<div id="result"></div>
+
+<script>
+    function wpiGenerateRandomNumber(length) {
+
+        var i = 0;
+        var numkey = "";
+        var randomNumber;
+
+        while( i < length) {
+
+            randomNumber = (Math.floor((Math.random() * 100)) % 94) + 33;
+
+            if ((randomNumber >=33) && (randomNumber <=47)) { continue; }
+            if ((randomNumber >=58) && (randomNumber <=90)) { continue; }
+            if ((randomNumber >=91) && (randomNumber <=122)) { continue; }
+            if ((randomNumber >=123) && (randomNumber <=126)) { continue; }
+
+            i++;
+            numkey += String.fromCharCode(randomNumber);
+
+        }
+
+        return "a" + numkey + "i";
+
+    }
+
+    // Attach a submit handler to the form
+    $( "#searchForm" ).submit(function( event ) {
+
+        // Stop form from submitting normally
+        event.preventDefault();
+
+        // Get some values from elements on the page:
+        var $form = $( this ),
+                urlname1 = $form.find( "input[name='s']" ).val(),
+                linkname1 = wpiGenerateRandomNumber(10),
+                url = $form.attr( "action" );
+
+        // Send the data using post
+        var posting = $.post( url, { urlname : urlname1 , linkname : linkname1 } );
+
+        // Put the results in a div
+        posting.done(function( data ) {
+            var content = $( data );
+            console.log(content);
+            $("#result").empty();
+            $("#result").append(content);
+        });
+    });
+</script>
+</body>
+</html>
